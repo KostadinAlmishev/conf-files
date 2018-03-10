@@ -1,21 +1,23 @@
 let g:ale_emit_conflict_warnings = 0
 call plug#begin('~/.config/nvim/bundle')
+Plug 'valloric/youcompleteme'
+Plug 'yggdroot/indentline'
 Plug 'SirVer/ultisnips'
 Plug 'vim-syntastic/syntastic'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'zchee/deoplete-jedi'
+" Plug 'zchee/deoplete-jedi'
 Plug 'trevordmiller/nova-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
-"Plug 'OmniSharp/omnisharp-vim'
+" Plug 'OmniSharp/omnisharp-vim'
 Plug 'vim-syntastic/syntastic'
-"Plug 'tpope/vim-dispatch'
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-" colorcheme
+" Plug 'tpope/vim-dispatch'
+" Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+" Colorcheme
 Plug 'Heorhiy/VisualStudioDark.vim'
 Plug 'altercation/vim-colors-solarized'
 
@@ -23,18 +25,23 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'tmhedberg/SimpylFold'
 " Bootstrap4 snippets
 Plug 'jvanja/vim-bootstrap4-snippets'
-Plug 'suan/instant-markdown-d'
+"Plug 'suan/instant-markdown-d'
 " css syntax
 Plug 'hail2u/vim-css3-syntax'
 " Surroundings
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
 Plug 'bling/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+Plug 'edkolev/tmuxline.vim'
 " Repeate . command for plugins
 Plug 'tpope/vim-repeat'
 " tmux nav
 Plug 'christoomey/vim-tmux-navigator'
-" call PlugInstall to install new plugins
+" Git wrapper
+Plug 'tpope/vim-fugitive'
+" Markdown Plugs
+"Plug 'suan/vim-instant-markdown'
+" Call PlugInstall to install new plugins
 call plug#end()
 
 " css3 syntax fix highlight problem
@@ -44,7 +51,7 @@ augroup VimCSS3Syntax
   autocmd FileType css setlocal iskeyword+=-
 augroup END
 
-" basics
+" Basics
 filetype plugin indent on
 syntax on
 set number relativenumber
@@ -62,7 +69,7 @@ set background=light
 colorscheme solarized
 let g:solarized_termcolors=256
 
-" preferences
+" Preferences
 inoremap jk <ESC>
 let mapleader = "\<Space>"
 set pastetoggle=<F2>
@@ -77,34 +84,36 @@ vnoremap > >gv
 " act more like C or D because by default, Y yanks the current line (i.e. the
 " same as yy).
 noremap Y y$
-" navigate split screens easily
+" Navigate split screens easily
 nmap <silent> <c-k> :wincmd k<CR>
 nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
-" change spacing for language specific
+" Change spacing for language specific
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
-"execute python script
+" Execute python script
 autocmd FileType python noremap <silent><F5> :wall \| !clear && echo "% is running..." && python3 %<CR>
 
-" plugin settings
+autocmd FileType c noremap <F4> :wall \| !clear && echo "% is compiling..." && gcc -std=c99 -Wall -Werror % -lm<CR>
 
-" deoplete
+" Plugin settings
+
+" Deoplete
 let g:deoplete#enable_at_startup = 1
-" use tab to forward cycle
+" Use tab to forward cycle
 inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" use tab to backward cycle
+" Use tab to backward cycle
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 " Close the documentation window when completion is done
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Theme
 syntax enable
-"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-"set termguicolors
-"set background=dark
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" set termguicolors
+" set background=dark
 
-"NERDTree
+" NERDTree
 " How can I close vim if the only window left open is a NERDTree?
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " toggle NERDTree
@@ -120,8 +129,8 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 " jsx
 let g:jsx_ext_required = 0
 
-"------------------------------------------
-"Omnisharp
+" ------------------------------------------
+" Omnisharp
 
 " OmniSharp won't work without this setting
 filetype plugin on
@@ -129,24 +138,24 @@ filetype plugin on
 "This is the default value, setting it isn't actually necessary
 let g:OmniSharp_host = "http://localhost:2000"
 
-"Set the type lookup function to use the preview window instead of the status line
-"let g:OmniSharp_typeLookupInPreview = 1
+" Set the type lookup function to use the preview window instead of the status line
+" let g:OmniSharp_typeLookupInPreview = 1
 
-"Timeout in seconds to wait for a response from the server
+" Timeout in seconds to wait for a response from the server
 let g:OmniSharp_timeout = 1
 
-"Showmatch significantly slows down omnicomplete
-"when the first match contains parentheses.
+" Showmatch significantly slows down omnicomplete
+" When the first match contains parentheses.
 set noshowmatch
 
-"Super tab settings - uncomment the next 4 lines
-"let g:SuperTabDefaultCompletionType = 'context'
-"let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
-"let g:SuperTabDefaultCompletionTypeDiscovery = ["&omnifunc:<c-x><c-o>","&completefunc:<c-x><c-n>"]
-"let g:SuperTabClosePreviewOnPopupClose = 1
+" Super tab settings - uncomment the next 4 lines
+" let g:SuperTabDefaultCompletionType = 'context'
+" let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+" let g:SuperTabDefaultCompletionTypeDiscovery = ["&omnifunc:<c-x><c-o>","&completefunc:<c-x><c-n>"]
+" let g:SuperTabClosePreviewOnPopupClose = 1
 
-"don't autoselect first item in omnicomplete, show if only one item (for preview)
-"remove preview if you don't want to see any documentation whatsoever.
+" Don't autoselect first item in omnicomplete, show if only one item (for preview)
+" Remove preview if you don't want to see any documentation whatsoever.
 set completeopt=longest,menuone,preview
 " Fetch full documentation during omnicomplete requests.
 " There is a performance penalty with this (especially on Mono)
@@ -154,8 +163,8 @@ set completeopt=longest,menuone,preview
 " you need it with the :OmniSharpDocumentation command.
 " let g:omnicomplete_fetch_documentation=1
 
-"Move the preview window (code documentation) to the bottom of the screen, so it doesn't move the code!
-"You might also want to look at the echodoc plugin
+" Move the preview window (code documentation) to the bottom of the screen, so it doesn't move the code!
+" You might also want to look at the echodoc plugin
 set splitbelow
 
 " Get Code Issues and syntax errors
@@ -165,45 +174,45 @@ let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
 augroup omnisharp_commands
     autocmd!
 
-    "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
+    " Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
     autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
     " Synchronous build (blocks Vim)
-    "autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
+    " Autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
     " Builds can also run asynchronously with vim-dispatch installed
     autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
-    " automatic syntax check on events (TextChanged requires Vim 7.4)
+    " Automatic syntax check on events (TextChanged requires Vim 7.4)
     autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
     " Automatically add new cs files to the nearest project on save
     autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
-    "show type information automatically when the cursor stops moving
+    " Show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 
-    "The following commands are contextual, based on the current cursor position.
+    " The following commands are contextual, based on the current cursor position.
 
     autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
     autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
     autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
     autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
     autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
-    "finds members in the current buffer
+    " finds members in the current buffer
     autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
     " cursor can be anywhere on the line containing an issue
     autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
     autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
     autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
     autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-    "navigate up by method/property/field
+    " navigate up by method/property/field
     autocmd FileType cs nnoremap <C-K> :OmniSharpNavigateUp<cr>
-    "navigate down by method/property/field
+    " navigate down by method/property/field
     autocmd FileType cs nnoremap <C-J> :OmniSharpNavigateDown<cr>
 
 augroup END
 
 
-" this setting controls how long to wait (in ms) before fetching type / symbol information.
+" This setting controls how long to wait (in ms) before fetching type / symbol information.
 set updatetime=500
 " Remove 'Press Enter to continue' message when type information is longer than one line.
 set cmdheight=2
@@ -213,10 +222,10 @@ nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
 " Run code actions with text selected in visual mode to extract method
 vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
 
-" rename with dialog
+" Rename with dialog
 nnoremap <leader>nm :OmniSharpRename<cr>
 nnoremap <F2> :OmniSharpRename<cr>
-" rename without dialog - with cursor on the symbol to rename... ':Rename newname'
+" Rename without dialog - with cursor on the symbol to rename... ':Rename newname'
 command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
 
 " Force OmniSharp to reload the solution. Useful when switching branches etc.
@@ -231,7 +240,7 @@ nnoremap <leader>sp :OmniSharpStopServer<cr>
 
 " Add syntax highlighting for types and interfaces
 nnoremap <leader>th :OmniSharpHighlightTypes<cr>
-"Don't ask to save when changing buffers (i.e. when jumping to a type definition)
+" Don't ask to save when changing buffers (i.e. when jumping to a type definition)
 set hidden
 
 " Enable snippet completion, requires completeopt-=preview
@@ -239,8 +248,8 @@ let g:OmniSharp_want_snippet = 1
 let g:OmniSharp_server_type = 'roslyn'
 
 
-"----------------------------------------------
-"syntastic
+" ----------------------------------------------
+" Syntastic
 
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
@@ -250,3 +259,40 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Tmux airline config
+let g:airline#extensions#tmuxline#enabled = 1
+let g:tmuxline_powerline_separators = 0
+let g:tmuxline_separators = {
+    \ 'left' : '',
+    \ 'left_alt': '>',
+    \ 'right' : '',
+    \ 'right_alt' : '<',
+    \ 'space' : ' '}
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'b'    : '#W',
+      \'c'    : '#H',
+      \'win'  : '#I #W',
+      \'cwin' : '#I #W',
+      \'x'    : '%a',
+      \'y'    : '#W %R',
+      \'z'    : '#H'}
+"let g:tmuxline_preset = {
+      "\'a'    : '#S',
+      "\'c'    : ['#(whoami)', '#(uptime | cut -d " " -f 1,2,3)'],
+      "\'win'  : ['#I', '#W'],
+      "\'cwin' : ['#I', '#W', '#F'],
+      "\'x'    : '#(date)',
+      "\'y'    : ['%R', '%a', '%Y'],
+      "\'z'    : '#H'}
+let airline#extensions#tmuxline#snapshot_file = "~/.tmux-status.conf"
+
+" Ale configuration
+let g:ale_fixers = {
+\   'python3': ['pylint3'],
+\}
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_use_deprecated_neovim = 1
