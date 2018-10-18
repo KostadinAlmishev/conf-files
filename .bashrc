@@ -3,7 +3,8 @@
 # for examples
 
 # Git compleation path
-source /usr/share/git-core/contrib/completion/git-prompt.sh
+#source /usr/share/git-core/contrib/completion/git-prompt.sh
+source /etc/bash_completion.d/git-prompt
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
