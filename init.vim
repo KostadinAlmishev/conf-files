@@ -1,6 +1,9 @@
 let g:ale_emit_conflict_warnings = 0
 call plug#begin('~/.config/nvim/bundle')
-Plug 'valloric/youcompleteme'
+Plug 'xolox/vim-easytags' | Plug 'xolox/vim-misc'
+Plug 'tpope/vim-sensible'
+Plug 'critiqjo/lldb.nvim'
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-completer' }
 Plug 'yggdroot/indentline'
 Plug 'SirVer/ultisnips'
 Plug 'vim-syntastic/syntastic'
@@ -13,13 +16,13 @@ Plug 'trevordmiller/nova-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
-"Plug 'OmniSharp/omnisharp-vim'
 " Plug 'tpope/vim-dispatch'
 " Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 " Colorcheme
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'Heorhiy/VisualStudioDark.vim'
 Plug 'altercation/vim-colors-solarized'
+Plug 'sonph/onehalf', { 'rtp': 'vim/' }
 
 " Python Folding
 Plug 'tmhedberg/SimpylFold'
@@ -42,6 +45,10 @@ Plug 'tpope/vim-fugitive'
 " Markdown Plugs
 "Plug 'suan/vim-instant-markdown'
 " Call PlugInstall to install new plugins
+" :SearchTasks TODO...
+Plug 'gilsondev/searchtasks.vim'
+" cmake support
+Plug 'vhdirk/vim-cmake'
 call plug#end()
 
 " css3 syntax fix highlight problem
@@ -75,8 +82,17 @@ let g:auto_save_postsave_hook = 'TagsGenerate'  " this will run :TagsGenerate af
 
 " Colorschemes
 set t_Co=256
-set background=dark
-colorscheme PaperColor
+" Terminal
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+set background=light
+"colorscheme PaperColor
+colorscheme onehalfdark
+let g:airline_theme='onehalfdark'
 
 " Preferences
 inoremap jk <ESC>
@@ -98,6 +114,8 @@ nmap <silent> <c-k> :wincmd k<CR>
 nmap <silent> <c-j> :wincmd j<CR>
 nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
+" vim + ctags + ctrlp
+nnoremap <leader>. :CtrlPTag<cr>
 
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 " Change spacing for language specific
@@ -203,3 +221,5 @@ let g:ale_fix_on_save = 0
 let g:ale_completion_enabled = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_use_deprecated_neovim = 1
+" SEARCHTASKS
+let g:searchtasks_list=["TODO", "FIXME", "XXX"]
