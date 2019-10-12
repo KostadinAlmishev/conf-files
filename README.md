@@ -45,3 +45,5 @@ yum install deltarpm
 
 you will download only the differences with older versions of already installed packages. This is done at the cost of increased processing time.
 ```
+
+## [GitHub labels](https://github.com/jasonbellamy/git-label-packages)
