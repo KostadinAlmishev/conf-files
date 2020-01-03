@@ -47,3 +47,5 @@ you will download only the differences with older versions of already installed 
 ```
 
 ## [GitHub labels](https://github.com/jasonbellamy/git-label-packages)
+
+## [Workspace swipe](https://github.com/Hikari9/comfortable-swipe)
